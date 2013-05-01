@@ -35,15 +35,16 @@ describe "Authentication" do
       end
       
       describe "after signing in the user" do        
-        it { should have_selector('title', user.name) }
-        it { should have_selector('h1', user.name) }
+        it { should have_selector('title', text: user.name) }
+        it { should have_selector('h1', text: user.name) }
         it { should have_link('Profile', href: user_path(user)) }
         it { should have_link('Sign out', href: signout_path) }
         it { should_not have_link('Sign in', href: signin_path) }
       end
       
-      it "should create a session" do
-        expect { click_button submit }.to change(Sesson, :count).by(1)
+      describe "followed by signout" do
+        before {click_link "Sign out" }
+        it { should have_link('Sign in') }
       end
     end
   end
